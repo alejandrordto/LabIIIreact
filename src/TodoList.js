@@ -6,8 +6,11 @@ export class TodoList extends React.Component{
         super(props);
     }
     render(){
-        const listItems = this.props.todoList.map((Obj) =>
-        <Obj text={Obj.text} priority={Obj.priority} dueDate ={Obj.dueDate} />
+        console.log(this.props.todoList)
+        const listItems = this.props.todoList.map((Obj,i) =>
+        <li><Todo res ={Obj}
+        />
+        </li>
         );
         return (
             <ul>{listItems}</ul>
