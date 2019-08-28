@@ -7,7 +7,7 @@ import { TodoList } from './TodoList';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], text: '', priority: '', duoDate: '' };
+    this.state = { items: [], text: '', priority: '', dueDate: '' };
     this.handletext = this.handletext.bind(this);
     this.handlePriorityChange = this.handlePriorityChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -20,24 +20,27 @@ class App extends Component {
     this.setState({ priority: e.target.value });
   }
   handleDateChange(e) {
-    this.setState({ duoDate: e.target.value });
+    this.setState({ dueDate: e.target.value });
   }
   handleSubmit(e) {
     e.preventDefault();
-    if (!this.state.text.length || this.state.duoDate.length || this.state.priority.length) {
+    console.log(this.state)
+    if (!this.state.text || !this.state.dueDate || !this.state.priority) {
       return;
     }
     const newItem = {
       text: this.state.text,
       priority: this.state.priority,
-      duoDate: this.state.duoDate
+      dueDate: this.state.dueDate
     }
     this.setState(prevState => ({
       items: prevState.items.concat(newItem),
       text: '',
       priority: '',
-      duoDate: ''
+      dueDate: ''
     }))
+    
+    console.log(this.state);
   }
   render() {
     const ListItems = [{ text: "Learn React", priority: 5, dueDate: new Date() },
@@ -50,7 +53,7 @@ class App extends Component {
 
         <div>
           <h2>TodoList</h2>
-          <TodoList items={this.state.items} />
+          
           <form onSubmit={this.handleSubmit}>
             <input
               id="texto"
@@ -76,14 +79,14 @@ class App extends Component {
               value={this.state.dueDate}
             /><br />
             <br />
-            <button>
+            <button onClick={this.handleSubmit}>
               Add
             </button>
           </form>
         </div>
-        {/*<TodoList todos={todos}/>*/}
+        <TodoList items={this.state.items} />
         <img src={logo} className="App-logo" alt="logo" />
-
+        
       </div>
 
     );
