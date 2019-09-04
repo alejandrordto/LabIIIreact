@@ -12,7 +12,17 @@ import './Login.css'
 
 
 export class Login extends React.Component{
+    SignUp(){
+        const Usuario=document.getElementById("email").value;
+        const Pass=document.getElementById("password").value;
+        if(Usuario!="" && Pass!=""){
+                localStorage.setItem('isLoggedIn',true);
+                localStorage.setItem('usuario',Usuario);
+                localStorage.setItem('password',Pass);
+            
+        }
 
+    }
     render(){
         return (
             <React.Fragment>
@@ -43,6 +53,7 @@ export class Login extends React.Component{
                                 variant="raised"
                                 color="primary"
                                 className="submit"
+                                onClick={this.SignUp}
                             >
                                 Sign in
                             </Button>
@@ -54,3 +65,4 @@ export class Login extends React.Component{
     }
 
 }
+export default Login;

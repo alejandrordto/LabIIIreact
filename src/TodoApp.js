@@ -22,7 +22,7 @@ class TodoApp extends Component {
   }
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state)
+
     if (!this.state.text || !this.state.dueDate || !this.state.priority) {
       return;
     }
@@ -37,14 +37,13 @@ class TodoApp extends Component {
       priority: '',
       dueDate: ''
     }))
-    
-    console.log(this.state);
+
+  
   }
   render() {
     const ListItems = [{ text: "Learn React", priority: 5, dueDate: new Date() },
     { text: "Learn about APIs", priority: 4, dueDate: new Date(2018, 8, 30) },
     { text: "write TODO App", priority: 3, dueDate: new Date(2018, 9, 30) }];
-
 
     return (
       <div className="TodoApp">
@@ -52,6 +51,7 @@ class TodoApp extends Component {
         <div>
           <h2>TodoList</h2>
           
+          <h2>hola {localStorage.getItem('Usuario')}</h2>
           <form onSubmit={this.handleSubmit}>
             <input
               id="texto"
@@ -84,7 +84,7 @@ class TodoApp extends Component {
         </div>
         <TodoList items={this.state.items} />
         <img src={logo} className="App-logo" alt="logo" />
-        
+
       </div>
 
     );
