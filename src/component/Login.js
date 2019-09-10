@@ -9,6 +9,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import './Login.css'
+import TodoApp from '../TodoApp';    
 
 
 export class Login extends React.Component{
@@ -22,7 +23,11 @@ export class Login extends React.Component{
     }
     handleLoggin(e) {
         e.preventDefault();
+
         this.setState({ Loggin: true });
+        localStorage.setItem('isLoggedIn',true);
+        localStorage.setItem('flag',false);
+        console.log(this.state);
     }
     handleEmail(e) {
         this.setState({
@@ -36,6 +41,11 @@ export class Login extends React.Component{
         });
     }
     render(){
+        if (this.state.Loggin) {
+            return (<div>
+                <TodoApp  />
+            </div>)
+        }
         return (
             <React.Fragment>
                 <CssBaseline />
@@ -69,7 +79,7 @@ export class Login extends React.Component{
                                 variant="raised"
                                 color="primary"
                                 className="submit"
-                                onClick={this.SignUp}
+                                onClick={this.handleLoggin}
                             >
                                 Sign in
                             </Button>

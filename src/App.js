@@ -9,6 +9,14 @@ import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 class App extends Component {
   constructor(props) {
     super(props);
+    if (localStorage.getItem('isLoggedIn') == undefined) {
+      localStorage.setItem('flag',true)
+    }
+
+    localStorage.setItem('isLoggedIn',false);
+    localStorage.setItem('email',"prueba");
+    localStorage.setItem('password',"prueba");
+
   }
   WhatView(logged) {
     const LoginView = () => (
@@ -20,11 +28,16 @@ class App extends Component {
         <TodoApp  />
       </div>
     );
-    if (!logged) {
+    if(localStorage.getItem('flag')){
+      console.log(logged)
+    }
+      console.log(logged,logged=false)
+    
+    
+    if (!logged ) {
       return (
         <div>
           <ul>
-            <li><Link to="/">Login</Link></li>
           </ul>
           <div>
             <Route exact path="/" component={LoginView} />
@@ -35,10 +48,9 @@ class App extends Component {
       return (
         <div>
           <ul>
-            <li><Link to="/">TODO</Link></li>
           </ul>
           <div>
-          <Route path="/" component={About} />
+          <Route exact path="/about" component={About}/>
           </div>
         </div>
       );
@@ -47,21 +59,11 @@ class App extends Component {
 
 
   render() {
-    
-    if (localStorage.getItem('isLoggedIn') == undefined) {
-      localStorage.setItem('isLoggedIn', false);
-  }
   const logg = localStorage.getItem('isLoggedIn');
     return (
       <Router>
         <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">TODO React App</h1>
-          </header>
 
-          <br />
-          <br />
           {this.WhatView(logg)}
         </div>
       </Router>
