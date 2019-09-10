@@ -12,16 +12,28 @@ import './Login.css'
 
 
 export class Login extends React.Component{
-    SignUp(){
-        const Usuario=document.getElementById("email").value;
-        const Pass=document.getElementById("password").value;
-        if(Usuario!="" && Pass!=""){
-                localStorage.setItem('isLoggedIn',true);
-                localStorage.setItem('usuario',Usuario);
-                localStorage.setItem('password',Pass);
-            
-        }
+    constructor(props) {
 
+        super(props);
+        this.state = { Loggin: false ,email: "", password: ''};
+        this.handleEmail = this.handleEmail.bind(this);
+        this.handlePassword = this.handlePassword.bind(this); 
+        this.handleLoggin = this.handleLoggin.bind(this);
+    }
+    handleLoggin(e) {
+        e.preventDefault();
+        this.setState({ Loggin: true });
+    }
+    handleEmail(e) {
+        this.setState({
+            email: e.target.value
+        });      
+    }
+
+    handlePassword(e) {
+        this.setState({
+            password: e.target.value
+        });
     }
     render(){
         return (
@@ -36,7 +48,10 @@ export class Login extends React.Component{
                         <form className="form">
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input id="email" name="email" autoComplete="email" autoFocus />
+                                <Input id="email" name="email" 
+                                autoComplete="email" autoFocus 
+                                onChange={this.handleEmail}/>
+                               
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -44,6 +59,7 @@ export class Login extends React.Component{
                                     name="password"
                                     type="password"
                                     id="password"
+                                    onChange={this.handlePassword}
                                     autoComplete="current-password"
                                 />
                             </FormControl>

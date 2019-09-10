@@ -20,7 +20,7 @@ class App extends Component {
         <TodoApp  />
       </div>
     );
-    if (logged) {
+    if (!logged) {
       return (
         <div>
           <ul>
@@ -49,7 +49,7 @@ class App extends Component {
   render() {
     
     if (localStorage.getItem('isLoggedIn') == undefined) {
-      localStorage.setItem('isLoggedIn', true);
+      localStorage.setItem('isLoggedIn', false);
   }
   const logg = localStorage.getItem('isLoggedIn');
     return (
