@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import logo, { ReactComponent } from './logo.svg';
 import { TodoList } from './TodoList';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
 class TodoApp extends Component {
   constructor(props) {
@@ -38,7 +39,7 @@ class TodoApp extends Component {
       dueDate: ''
     }))
 
-  
+
   }
   render() {
     const ListItems = [{ text: "Learn React", priority: 5, dueDate: new Date() },
@@ -46,12 +47,17 @@ class TodoApp extends Component {
     { text: "write TODO App", priority: 3, dueDate: new Date(2018, 9, 30) }];
 
     return (
+
+
       <div className="TodoApp">
+        <Drawer
+          className="dwawer"
+          variant="permanent"
+        ></Drawer>
 
         <div>
-          <h2>TodoList</h2>
-          
-          <h2>hola {localStorage.getItem('Usuario')}</h2>
+
+          <h2>hola {localStorage.getItem('email')}</h2>
           <form onSubmit={this.handleSubmit}>
             <input
               id="texto"
@@ -83,7 +89,6 @@ class TodoApp extends Component {
           </form>
         </div>
         <TodoList items={this.state.items} />
-        <img src={logo} className="App-logo" alt="logo" />
 
       </div>
 

@@ -5,34 +5,35 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockIcon from '@material-ui/icons/LockOutlined';
-import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import './Login.css'
-import TodoApp from '../TodoApp';    
-
-
-export class Login extends React.Component{
+import TodoApp from '../TodoApp';
+import CardMedia from '@material-ui/core/CardMedia';
+import Card from '@material-ui/core/Card';
+import men from '../img/men.png';
+export class Login extends React.Component {
     constructor(props) {
 
         super(props);
-        this.state = { Loggin: false ,email: "", password: ''};
+        this.state = { Loggin: false, email: "", password: '' };
         this.handleEmail = this.handleEmail.bind(this);
-        this.handlePassword = this.handlePassword.bind(this); 
+        this.handlePassword = this.handlePassword.bind(this);
         this.handleLoggin = this.handleLoggin.bind(this);
     }
     handleLoggin(e) {
         e.preventDefault();
 
         this.setState({ Loggin: true });
-        localStorage.setItem('isLoggedIn',true);
-        localStorage.setItem('flag',false);
+        localStorage.setItem('isLoggedIn', true);
+        localStorage.setItem('flag', false);
         console.log(this.state);
     }
     handleEmail(e) {
         this.setState({
             email: e.target.value
-        });      
+            
+        });
+        localStorage.setItem('email',e.target.value);
     }
 
     handlePassword(e) {
@@ -40,28 +41,35 @@ export class Login extends React.Component{
             password: e.target.value
         });
     }
-    render(){
+    render() {
         if (this.state.Loggin) {
             return (<div>
-                <TodoApp  />
+                <TodoApp />
             </div>)
         }
         return (
             <React.Fragment>
                 <CssBaseline />
                 <main className="layout">
-                    <Paper className="paper">
-                        <Avatar className="avatar">
-                            <LockIcon />
-                        </Avatar>
-                        <Typography variant="headline">Sign in</Typography>
+
+                    <Card className="paper">
+                        <Typography variant="headline">Task-planer</Typography>
+                        <CardMedia
+                            component="img"
+                            alt="men"
+                            align="center"
+                            class="responsive"
+                            image={men}
+                            title="men"
+                        />
+
                         <form className="form">
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
-                                <Input id="email" name="email" 
-                                autoComplete="email" autoFocus 
-                                onChange={this.handleEmail}/>
-                               
+                                <Input id="email" name="email"
+                                    autoComplete="email" autoFocus
+                                    onChange={this.handleEmail} />
+
                             </FormControl>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="password">Password</InputLabel>
@@ -84,7 +92,7 @@ export class Login extends React.Component{
                                 Sign in
                             </Button>
                         </form>
-                    </Paper>
+                    </Card>
                 </main>
             </React.Fragment>
         );
