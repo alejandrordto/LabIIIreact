@@ -31,9 +31,9 @@ export class Login extends React.Component {
     handleEmail(e) {
         this.setState({
             email: e.target.value
-            
+
         });
-        localStorage.setItem('email',e.target.value);
+        localStorage.setItem('email', e.target.value);
     }
 
     handlePassword(e) {

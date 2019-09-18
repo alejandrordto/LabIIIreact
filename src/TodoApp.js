@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import { TodoList } from './TodoList';
-import Drawer from '@material-ui/core/Drawer';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import Menu from "./component/Menu";
+import Card from '@material-ui/core/Card';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import MenuItem from '@material-ui/core/MenuItem';
+import { TextField } from '@material-ui/core';
 
 class TodoApp extends Component {
   constructor(props) {
     super(props);
-    this.state = { items: [], text: '', priority: '', dueDate: '' };
+    this.state = { items: [], text: '', priority: '', dueDate: new Date() };
     this.handletext = this.handletext.bind(this);
     this.handlePriorityChange = this.handlePriorityChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -19,11 +23,11 @@ class TodoApp extends Component {
     this.setState({ priority: e.target.value });
   }
   handleDateChange(e) {
-    this.setState({ dueDate: e.target.value });
+    this.setState({ dueDate: e });
   }
   handleSubmit(e) {
     e.preventDefault();
-
+    console.log(this.state);
     if (!this.state.text || !this.state.dueDate || !this.state.priority) {
       return;
     }
@@ -32,6 +36,7 @@ class TodoApp extends Component {
       priority: this.state.priority,
       dueDate: this.state.dueDate
     }
+    console.log(newItem)
     this.setState(prevState => ({
       items: prevState.items.concat(newItem),
       text: '',
@@ -39,56 +44,57 @@ class TodoApp extends Component {
       dueDate: ''
     }))
 
-
   }
   render() {
-    const ListItems = [{ text: "Learn React", priority: 5, dueDate: new Date() },
-    { text: "Learn about APIs", priority: 4, dueDate: new Date(2018, 8, 30) },
-    { text: "write TODO App", priority: 3, dueDate: new Date(2018, 9, 30) }];
-
+    const estates = [
+      { status: "Completed" }, { status: "In Progess" }, { status: "Ready" }
+    ]
     return (
 
 
       <div className="TodoApp">
-        <Drawer
-          className="dwawer"
-          variant="permanent"
-        ></Drawer>
 
         <div>
-
+          <Menu />
           <h2>hola {localStorage.getItem('email')}</h2>
-          <form onSubmit={this.handleSubmit}>
-            <input
-              id="texto"
-              type="text"
-              placeholder="text"
-              onChange={this.handletext}
-              value={this.state.text}
-            /><br />
-            <br />
-            <input
-              id="priority"
-              type="number"
-              placeholder="Priority"
-              onChange={this.handlePriorityChange}
-              value={this.state.priority}
-            /><br />
-            <br />
-            <input
-              id="date"
-              type="date"
-              placeholder="Date(dd/mm/aa)"
-              onChange={this.handleDateChange}
-              value={this.state.dueDate}
-            /><br />
-            <br />
-            <button onClick={this.handleSubmit}>
-              Add
+            <form onSubmit={this.handleSubmit}>
+              <input
+                id="texto"
+                type="text"
+                placeholder="text"
+                onChange={this.handletext}
+                value={this.state.text}
+              /><br />
+              <br />
+              <TextField
+                id="priority"
+                select
+                label="estado"
+                onChange={this.handlePriorityChange}
+                value={this.state.priority}  
+              >
+                {estates.map(option => (
+                  <MenuItem key={option.status} value={option.status}>
+                    {option.status}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <br />
+              <br />
+              <DatePicker
+                id="date-todo"
+                selected={this.state.dueDate}
+                onChange={this.handleDateChange} />
+              <br />
+              <button onClick={this.handleSubmit}>
+                Add
             </button>
-          </form>
+            </form>
+          
         </div>
-        <TodoList items={this.state.items} />
+        <h2>Lista de tareas</ h2>
+        <Card> <TodoList items={this.state.items} /></Card>
+       
 
       </div>
 
