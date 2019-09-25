@@ -7,7 +7,6 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import Face from '@material-ui/icons/Face';
 import Menu from "./component/Menu";
-import Card from '@material-ui/core/Card';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -119,7 +118,7 @@ class TodoApp extends Component {
           
         </div>
         <h2>Lista de tareas</ h2>
-        <Card> <TodoList items={this.state.items} /></Card>
+         <TodoList items={this.state.items} />
        
 
       </div>
