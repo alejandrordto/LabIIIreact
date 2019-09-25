@@ -5,6 +5,9 @@ import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
+import { makeStyles } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 import Face from '@material-ui/icons/Face';
 import Menu from "./component/Menu";
 import DatePicker from 'react-datepicker';
@@ -14,6 +17,7 @@ import { TextField } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+
 
 class TodoApp extends Component {
   constructor(props) {
@@ -65,6 +69,8 @@ class TodoApp extends Component {
     }))
 
   }
+  
+  
   render() {
     const estates = [
       { status: "Completed" }, { status: "In Progess" }, { status: "Ready" }
@@ -78,48 +84,50 @@ class TodoApp extends Component {
 
 
       <div className="TodoApp">
-        
+
         <div>
           <Menu />
           <h2>hola {localStorage.getItem('email')}</h2>
-            <form onSubmit={this.handleSubmit}>
-              <input
-                id="texto"
-                type="text"
-                placeholder="text"
-                onChange={this.handletext}
-                value={this.state.text}
-              /><br />
-              <br />
-              <TextField
-                id="priority"
-                select
-                label="estado"
-                onChange={this.handlePriorityChange}
-                value={this.state.priority}  
-              >
-                {estates.map(option => (
-                  <MenuItem key={option.status} value={option.status}>
-                    {option.status}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <br />
-              <br />
-              <DatePicker
-                id="date-todo"
-                selected={this.state.dueDate}
-                onChange={this.handleDateChange} />
-              <br />
-              <button onClick={this.handleSubmit}>
-                Add
-            </button>
-            </form>
-          
+          <form onSubmit={this.handleSubmit}>
+            <input
+              id="texto"
+              type="text"
+              placeholder="text"
+              onChange={this.handletext}
+              value={this.state.text}
+            /><br />
+            <br />
+            <TextField
+              id="priority"
+              select
+              label="estado"
+              onChange={this.handlePriorityChange}
+              value={this.state.priority}
+            >
+              {estates.map(option => (
+                <MenuItem key={option.status} value={option.status}>
+                  {option.status}
+                </MenuItem>
+              ))}
+            </TextField>
+            <br />
+            <br />
+            <DatePicker
+              id="date-todo"
+              
+              selected={this.state.dueDate}
+              onChange={this.handleDateChange} />
+            <br />
+            <Fab color="primary" aria-label="add" >
+              <AddIcon onClick={this.handleSubmit} />
+            </Fab>
+
+          </form>
+
         </div>
         <h2>Lista de tareas</ h2>
-         <TodoList items={this.state.items} />
-       
+        <TodoList items={this.state.items} />
+
 
       </div>
 
