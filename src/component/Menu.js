@@ -38,7 +38,7 @@ export default function MenuDrawer() {
       <List>
         <ListItem key='User'>
           <ListItemIcon><Face></Face></ListItemIcon>
-          <ListItemText primary={localStorage.getItem('mailLogged')} />
+          <ListItemText primary={localStorage.getItem('email')} />
         </ListItem>
 
       </List>
