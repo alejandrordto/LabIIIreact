@@ -25,7 +25,6 @@ export class Login extends React.Component {
 
         this.setState({ Loggin: true });
         localStorage.setItem('isLoggedIn', true);
-        localStorage.setItem('flag', false);
         console.log(this.state);
     }
     handleEmail(e) {

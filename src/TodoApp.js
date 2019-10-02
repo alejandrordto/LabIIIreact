@@ -14,22 +14,33 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import MenuItem from '@material-ui/core/MenuItem';
 import { TextField } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import Modal from '@material-ui/core/Modal'
 
 
 class TodoApp extends Component {
   constructor(props) {
     super(props);
-
-    this.state = { items: [], text: '', priority: '', dueDate: new Date(), side: false };
+    this.state = { items: [], text: '', priority: '', dueDate: new Date(), side: false, responsable: '',
+    open: false };
 
     this.handletext = this.handletext.bind(this);
     this.handlePriorityChange = this.handlePriorityChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleside = this.handleside.bind(this);
+    this.handleResponsable = this.handleResponsable.bind(this);
+    this.handleOpen=this.handleOpen.bind(this);
+    this.handleClose=this.handleClose.bind(this);
+
+  }
+  handleOpen(e){
+    this.setState({open: true})
+  }
+  handleClose(e){
+    this.setState({open: false})
+  }
+  handleResponsable(e) {
+    this.setState({ responsable: e.target.value });
   }
   handletext(e) {
     this.setState({ text: e.target.value });
@@ -69,8 +80,8 @@ class TodoApp extends Component {
     }))
 
   }
-  
-  
+
+
   render() {
     const estates = [
       { status: "Completed" }, { status: "In Progess" }, { status: "Ready" }
@@ -82,7 +93,7 @@ class TodoApp extends Component {
     }
     return (
 
-
+      
       <div className="TodoApp">
 
         <div>
@@ -97,6 +108,17 @@ class TodoApp extends Component {
               value={this.state.text}
             /><br />
             <br />
+            <TextField
+              value={this.state.title}
+              id="responsable"
+              type="responsable"
+              label="responsable"
+              onChange={this.handleResponsable}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <div></div>
             <TextField
               id="priority"
               select
@@ -114,7 +136,7 @@ class TodoApp extends Component {
             <br />
             <DatePicker
               id="date-todo"
-              
+
               selected={this.state.dueDate}
               onChange={this.handleDateChange} />
             <br />
@@ -127,7 +149,22 @@ class TodoApp extends Component {
         </div>
         <h2>Lista de tareas</ h2>
         <TodoList items={this.state.items} />
-
+        <button type="button" onClick={this.handleOpen}>
+          Open Modal
+      </button>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div >
+            <h2 id="simple-modal-title">Filtro de tareas</h2>
+            <p id="simple-modal-description">
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+          </p>
+          </div>
+        </Modal>
 
       </div>
 

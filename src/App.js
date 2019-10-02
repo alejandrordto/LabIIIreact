@@ -5,17 +5,19 @@ import './App.css';
 import TodoApp from './TodoApp';
 import { Login } from "./component/Login";
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { UserProfile } from "./component/UserProfile";
 
 class App extends Component {
   constructor(props) {
     super(props);
     if (localStorage.getItem('isLoggedIn') == undefined) {
-      localStorage.setItem('flag',true)
+      localStorage.setItem('isLoggedIn', false)
     }
-
-    localStorage.setItem('isLoggedIn',false);
-    localStorage.setItem('email',"prueba");
-    localStorage.setItem('password',"prueba");
+    if (localStorage.getItem('configure') == undefined){
+      localStorage.setItem('configure',false)
+    }
+    localStorage.setItem('email', "prueba");
+    localStorage.setItem('password', "prueba");
 
   }
   WhatView(logged) {
@@ -23,18 +25,13 @@ class App extends Component {
       <Login />
     );
 
-    const About = () => (
-      <div>
-        <TodoApp  />
-      </div>
+    const UserView = () => (
+        <UserProfile />
     );
-    if(localStorage.getItem('flag')){
-      console.log(logged)
-    }
-      console.log(logged,logged=false)
-    
-    
-    if (!logged ) {
+    console.log( logged);
+    console.log( logged == "false")
+
+    if (logged=="false") {
       return (
         <div>
           <ul>
@@ -45,21 +42,20 @@ class App extends Component {
         </div>
       );
     } else {
-      return (
-        <div>
-          <ul>
-          </ul>
-          <div>
-          <Route exact path="/about" component={About}/>
-          </div>
-        </div>
-      );
+      
+      if (localStorage.getItem('configure')=="true") {
+        return(<Route exact path="/" component={UserView} />)
+        
+      }
+      else {
+        return (<Route exact path="/" component={TodoApp} />)
+      } 
     }
   }
 
 
   render() {
-  const logg = localStorage.getItem('isLoggedIn');
+    const logg = localStorage.getItem('isLoggedIn');
     return (
       <Router>
         <div className="App">

@@ -9,12 +9,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Face from '@material-ui/icons/Face';
 import Menu from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
-
 function logOut() {
   localStorage.removeItem("isLoggedin");
   window.location.reload();
 }
-
+function Configure(){
+  localStorage.setItem("configure",true);
+  window.location.reload();
+}
 export default function MenuDrawer() {
 
   const [state, setState] = React.useState({
@@ -43,6 +45,10 @@ export default function MenuDrawer() {
 
       </List>
       <Divider />
+      <Button onClick={Configure}>
+        Configure account
+      </Button>
+      <div></div>
       <Button variant="contained" color="secondary" onClick={logOut}>
           Log out
       </Button>
