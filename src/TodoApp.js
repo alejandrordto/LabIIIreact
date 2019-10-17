@@ -79,7 +79,8 @@ class TodoApp extends Component {
       items: prevState.items.concat(newItem),
       text: '',
       priority: '',
-      dueDate: ''
+      dueDate: '',
+      responsable:''
     }))
 
   }
