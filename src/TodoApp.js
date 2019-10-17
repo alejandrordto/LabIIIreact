@@ -16,13 +16,15 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { TextField } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal'
 import { transform } from '@babel/core';
+import SearchIcon from '@material-ui/icons/Search';
+
 
 
 class TodoApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [], text: '', priority: '', dueDate: new Date(), side: false, responsable: '',
+      items: [], text: '', priority: '', dueDate: new Date(), side: false, responsible: '', filter: false,
       open: false
     };
 
@@ -31,10 +33,31 @@ class TodoApp extends Component {
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleside = this.handleside.bind(this);
-    this.handleResponsable = this.handleResponsable.bind(this);
+    this.handleResponsible = this.handleResponsible.bind(this);
     this.handleOpen = this.handleOpen.bind(this);
     this.handleClose = this.handleClose.bind(this);
-
+    this.handleFilter = this.handleFilter.bind(this);
+    this.handleFilterb = this.handleFilterb.bind(this);
+    this.setstatus = this.setstatus.bind(this);
+    this.lista = [];
+    this.fechaf = new Date();
+    this.estado = "";
+    if (JSON.parse(localStorage.getItem("list")) !== null) {
+      this.state.items = JSON.parse(localStorage.getItem("list"));
+      this.lista = JSON.parse(localStorage.getItem("list"));
+    }
+  }
+  checkdata(items) {
+    this.lista.push(items);
+    localStorage.setItem("list", JSON.stringify(this.lista));
+  }
+  handleFilter(e) {
+    this.setState({ filter: true })
+    localStorage.setItem("filter", true)
+  }
+  handleFilterb(e) {
+    this.setState({ filter: false })
+    localStorage.setItem("filter", false)
   }
   handleOpen(e) {
     this.setState({ open: true })
@@ -42,11 +65,21 @@ class TodoApp extends Component {
   handleClose(e) {
     this.setState({ open: false })
   }
-  handleResponsable(e) {
-    this.setState({ responsable: e.target.value });
+  handleResponsible(e) {
+    this.setState({ responsible: e.target.value });
   }
   handletext(e) {
     this.setState({ text: e.target.value });
+  }
+  setFecha(e) {
+    localStorage.setItem('fecha', e)
+  }
+  setowner(e) {
+    localStorage.setItem('responsible', e.target.value);
+  }
+  setstatus(e) {
+    this.estado = e.target.value;
+    localStorage.setItem('estado', e.target.value);
   }
   handleside(e) {
     if (this.state.side) {
@@ -66,25 +99,38 @@ class TodoApp extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log(this.state);
-    if (!this.state.text || !this.state.dueDate || !this.state.priority) {
+    if (!this.state.text || !this.state.dueDate || !this.state.priority || !this.state.responsible) {
       return;
     }
     const newItem = {
       text: this.state.text,
       priority: this.state.priority,
-      dueDate: this.state.dueDate
+      dueDate: this.state.dueDate,
+      responsible:this.state.responsible
     }
     console.log(newItem)
     this.setState(prevState => ({
       items: prevState.items.concat(newItem),
-      text: '',
-      priority: '',
-      dueDate: '',
-      responsable:''
-    }))
+      text: ''
+    }));
+    this.checkdata(newItem);
 
   }
 
+  componentDidMount() {
+    fetch('http://localhost:8080/Task/Tasks')
+      .then(response => response.json())
+      .then(data => {
+        let tasksList = [];
+        data.items.forEach(function (task) {
+          tasksList.push({
+            //Implement this part
+          })
+
+        });
+        this.setState({ tasksList: tasksList });
+      });
+  }
 
   render() {
     const estates = [
@@ -109,6 +155,10 @@ class TodoApp extends Component {
     const clomunStyle = {
       width: '200px'
     }
+    const buttonStyle = {         
+      marginBottom:"30px",
+      Width: "50px",
+    };
     return (
 
 
@@ -121,6 +171,7 @@ class TodoApp extends Component {
             <input
               id="texto"
               type="text"
+              style={clomunStyle}
               placeholder="text"
               onChange={this.handletext}
               value={this.state.text}
@@ -128,10 +179,11 @@ class TodoApp extends Component {
             <br />
             <TextField
               value={this.state.title}
-              id="responsable"
-              type="responsable"
-              label="responsable"
-              onChange={this.handleResponsable}
+              id="responsible"
+              type="responsible"
+              label="responsible"
+              style={clomunStyle}
+              onChange={this.handleResponsible}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -139,6 +191,7 @@ class TodoApp extends Component {
             <div></div>
             <TextField
               id="priority"
+              style={clomunStyle}
               select
               label="estado"
               onChange={this.handlePriorityChange}
@@ -154,11 +207,11 @@ class TodoApp extends Component {
             <br />
             <DatePicker
               id="date-todo"
-
+              style={clomunStyle}
               selected={this.state.dueDate}
               onChange={this.handleDateChange} />
             <br />
-            <Fab color="primary" aria-label="add" >
+            <Fab color="primary" aria-label="add" onClick={this.handleSubmit}>
               <AddIcon onClick={this.handleSubmit} />
             </Fab>
 
@@ -168,7 +221,10 @@ class TodoApp extends Component {
         <h2>Lista de tareas</ h2>
         <TodoList items={this.state.items} />
         <button type="button" onClick={this.handleOpen}>
-          Open Modal
+          Filtrar
+      </button>
+      <button type="button" onClick={this.handleFilterb}>
+          Quitar Filtro
       </button>
         <Modal
           aria-labelledby="simple-modal-title"
@@ -180,17 +236,18 @@ class TodoApp extends Component {
             <h2 id="simple-modal-title">Filtro de tareas</h2>
             <p id="simple-modal-description"></p>
             <DatePicker
-              id="date-todo"
+              id="date-filter"
+              onChange={this.setFecha}
               style={clomunStyle}
-              />
+            />
 
             <TextField
-              id="priority"
+              id="priorityfilter"
               select
               style={clomunStyle}
               label="estado"
-              onChange={this.handlePriorityChange}
-              value={this.state.priority}
+              onChange={this.setstatus}
+              value={this.estado}
             >
               {estates.map(option => (
                 <MenuItem key={option.status} value={option.status}>
@@ -199,16 +256,18 @@ class TodoApp extends Component {
               ))}
             </TextField>
             <TextField
-              id="responsable"
+              id="responsible"
               style={clomunStyle}
-              label="responsable"
-              onChange={this.handlePriorityChange}
-              value={this.state.priority}
+              label="responsible"
+              onChange={this.setowner}
             >
 
             </TextField>
-            
+            <Button style={buttonStyle} variant="contained" color="primary" onClick={this.handleFilter}  >
+                    Apply
+                </Button>
           </div>
+          
         </Modal>
 
       </div>

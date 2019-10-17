@@ -16,9 +16,14 @@ class App extends Component {
     if (localStorage.getItem('configure') == undefined){
       localStorage.setItem('configure',false)
     }
+    if (localStorage.getItem('filter') == undefined) { 
+      localStorage.setItem("filter",false);
+  }
     localStorage.setItem('email', "prueba");
     localStorage.setItem('password', "prueba");
-
+    localStorage.setItem('estado', "");
+    localStorage.setItem('responsable', "");
+    localStorage.setItem('fecha', new Date());
   }
   WhatView(logged) {
     const LoginView = () => (
