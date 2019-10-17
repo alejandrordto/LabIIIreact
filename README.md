@@ -1,4 +1,4 @@
-##Link github
+## Link Heroku
 
 https://taskplaneri.herokuapp.com/
 
