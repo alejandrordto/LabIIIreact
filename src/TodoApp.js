@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
 import { TodoList } from './TodoList';
 import Button from '@material-ui/core/Button';
-import Drawer from '@material-ui/core/Drawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import { makeStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
-import Face from '@material-ui/icons/Face';
 import Menu from "./component/Menu";
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import MenuItem from '@material-ui/core/MenuItem';
 import { TextField } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal'
-import { transform } from '@babel/core';
-import SearchIcon from '@material-ui/icons/Search';
-
+import uuid from 'react-uuid';
 
 
 class TodoApp extends Component {
@@ -103,12 +95,20 @@ class TodoApp extends Component {
       return;
     }
     const newItem = {
-      text: this.state.text,
+      id: uuid(),
+      responsible: this.state.responsible,
       priority: this.state.priority,
-      dueDate: this.state.dueDate,
-      responsible:this.state.responsible
+      dueDate: this.state.dueDate, 
+      text: this.state.text,
     }
-    console.log(newItem)
+    console.log(newItem);
+    fetch('http://localhost:8080/Task', {
+      method: 'POST',
+      body: JSON.stringify(newItem),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     this.setState(prevState => ({
       items: prevState.items.concat(newItem),
       text: ''
@@ -124,7 +124,11 @@ class TodoApp extends Component {
         let tasksList = [];
         data.items.forEach(function (task) {
           tasksList.push({
-            //Implement this part
+            id: task.id,
+            owner: task.owner,
+            status: task.state,
+            dueDate: task.date,
+            text: task.activity,
           })
 
         });
@@ -155,8 +159,8 @@ class TodoApp extends Component {
     const clomunStyle = {
       width: '200px'
     }
-    const buttonStyle = {         
-      marginBottom:"30px",
+    const buttonStyle = {
+      marginBottom: "30px",
       Width: "50px",
     };
     return (
@@ -223,7 +227,7 @@ class TodoApp extends Component {
         <button type="button" onClick={this.handleOpen}>
           Filtrar
       </button>
-      <button type="button" onClick={this.handleFilterb}>
+        <button type="button" onClick={this.handleFilterb}>
           Quitar Filtro
       </button>
         <Modal
@@ -264,10 +268,10 @@ class TodoApp extends Component {
 
             </TextField>
             <Button style={buttonStyle} variant="contained" color="primary" onClick={this.handleFilter}  >
-                    Apply
+              Apply
                 </Button>
           </div>
-          
+
         </Modal>
 
       </div>

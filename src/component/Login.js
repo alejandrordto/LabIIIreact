@@ -88,7 +88,7 @@ export class Login extends React.Component {
                                 className="submit"
                                 onClick={this.handleLoggin}
                             >
-                                Sign in
+                                Logg in
                             </Button>
                         </form>
                     </Card>

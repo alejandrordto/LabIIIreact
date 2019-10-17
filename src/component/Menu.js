@@ -10,7 +10,7 @@ import Face from '@material-ui/icons/Face';
 import Menu from '@material-ui/icons/Menu';
 import IconButton from '@material-ui/core/IconButton';
 function logOut() {
-  localStorage.removeItem("isLoggedin");
+  localStorage.setItem('isLoggedIn',false);
   window.location.reload();
 }
 function Configure(){
