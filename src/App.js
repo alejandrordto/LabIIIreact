@@ -25,6 +25,7 @@ class App extends Component {
     localStorage.setItem('responsable', "");
     localStorage.setItem('fecha', new Date());
   }
+
   WhatView(logged) {
     const LoginView = () => (
       <Login />

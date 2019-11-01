@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { TextField } from '@material-ui/core';
 import Modal from '@material-ui/core/Modal'
 import uuid from 'react-uuid';
+import axios from 'axios';
 
 
 class TodoApp extends Component {
@@ -102,13 +103,22 @@ class TodoApp extends Component {
       text: this.state.text,
     }
     console.log(newItem);
-    fetch('http://localhost:8080/Task', {
-      method: 'POST',
-      body: JSON.stringify(newItem),
-      headers: {
-        'Content-Type': 'application/json'
+    const host = "http://localhost:8080";
+    axios.put(host+'/Task/addtask?userId='+localStorage.username,{
+      id: this.state.responsible+this.state.dueDate+this.state.status+this.state.text,
+      responsible: this.state.responsible,
+      status: this.state.priority,
+      text : this.state.text,
+      date: this.state.dueDate,
+  },{
+      headers:{
+          Authorization: 'Bearer '+localStorage.getItem("accessToken")
       }
-    });
+  }).then(function (response) {
+      window.alert("Task Added")
+  }).catch(function (error) {
+      console.log(error);
+  })
     this.setState(prevState => ({
       items: prevState.items.concat(newItem),
       text: ''

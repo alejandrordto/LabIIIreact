@@ -11,6 +11,7 @@ import TodoApp from '../TodoApp';
 import CardMedia from '@material-ui/core/CardMedia';
 import Card from '@material-ui/core/Card';
 import men from '../img/men.png';
+import axios from 'axios';
 export class Login extends React.Component {
     constructor(props) {
 
@@ -22,7 +23,18 @@ export class Login extends React.Component {
     }
     handleLoggin(e) {
         e.preventDefault();
-
+        const  host = "http://localhost:8080";;
+        axios.post(host+'/Users/login', {
+            id: this.state.username,
+            password: this.state.password
+        })
+            .then(function (response) {
+                localStorage.setItem("accessToken", response.data.accessToken);
+                localStorage.setItem("isLoggedIn","true");
+            })
+            .catch(function (error) {
+                window.alert("Wrong credencials");
+            });
         this.setState({ Loggin: true });
         localStorage.setItem('isLoggedIn', true);
         console.log(this.state);
