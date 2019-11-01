@@ -128,22 +128,17 @@ class TodoApp extends Component {
   }
 
   componentDidMount() {
-    fetch('http://localhost:8080/Task/Tasks')
-      .then(response => response.json())
-      .then(data => {
-        let tasksList = [];
-        data.items.forEach(function (task) {
-          tasksList.push({
-            id: task.id,
-            owner: task.owner,
-            status: task.state,
-            dueDate: task.date,
-            text: task.activity,
-          })
-
-        });
-        this.setState({ tasksList: tasksList });
-      });
+    var now = this;
+    const host = "http://localhost:8080";
+    axios.get(host+"/Task/gettasks?userid="+localStorage.username,{
+        headers:{
+            Authorization: 'Bearer '+localStorage.getItem("accessToken")
+        }
+    }).then(function (response) {
+        now.setState({tasks:response.data});
+    }).catch(function (error) {
+        console.log(error);
+    })
   }
 
   render() {
